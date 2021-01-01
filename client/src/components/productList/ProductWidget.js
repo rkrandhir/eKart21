@@ -1,36 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { addToCart, addPriceToCart } from './../../actions';
+import { Link } from 'react-router-dom';
 
-class ProductWidget extends React.Component{
-        addToCart(product) {
-            if(this.props.selectedProducts.find(item => item.id === product.id)) {
-                console.log("already added!")
-                return;
-            } else {
-                console.log(product.price)
-                this.props.addPriceToCart(product.price);
-                return this.props.addToCart(product);
-            }
+const ProductWidget = ({product, selectedProducts, addToCart, addPriceToCart}) => {
+    const [addedToCart, setAddedToCart] = useState(false);
+    useEffect(() => {
+        setAddedToCart(false)
+        return () => {
+          
         }
+    },[])
 
-        render() {
-            return (
-                <div className="productWidget" key={this.props.product.id}>
-                    <div className="prodImg">
-                        <img src={this.props.product.img} alt={this.props.product.name} />
-                    </div>
-                    <div className="productTitle">{this.props.product.name}</div>
-                    <div className="productPrice">INR {this.props.product.price}</div>
-                    <span className="addToCart" onClick={() => this.addToCart(this.props.product)}>Add to cart</span>
-                </div>
-            )
+    const addItemToCart = product => {
+        if (selectedProducts.find(item => item.id === product.id)) {
+            setAddedToCart(true)
+            return;
+        } else {
+            setAddedToCart(true)
+            addPriceToCart(product.price);
+            return addToCart(product);
         }
     }
 
+    return (
+        <div className="productWidget">
+            <div className="prodImg">
+                {addedToCart ? <div className="cartItemMsg">
+                    <Link to='/cart'>Go to cart</Link>
+                </div> : null }
+                <img src={product.img} alt={product.name} />
+            </div>
+            <Link className="productTitle" to={`/product/${product.id}`}>{product.name}</Link>
+            <div className="productPrice">INR {product.price}</div>
+            <span 
+                className="addToCart" 
+                onClick={() => addItemToCart(product)}>Add to cart</span>
+        </div>
+    )
+}
+
 const mapStateToProps = state => {
     return {
-        selectedProducts : state.selectedProducts
+        selectedProducts: state.selectedProducts
     }
 }
 

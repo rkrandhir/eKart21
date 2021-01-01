@@ -1,35 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {Link } from 'react-router-dom';
 import MiniCartPanel from './MiniCartPanel';
 
-class TopNav extends React.Component {
-    renderCartItemNumer() {
-        if(this.props.cartItems.length > 0) return <span>({this.props.cartItems.length})</span>
+const TopNav = ({cartItems}) => {
+    const [showMiniCart, setshowMiniCart] = useState(false);
+    
+    const renderCartItemNumer = () => {
+        if(cartItems.length > 0) return <span>({cartItems.length})</span>
     }
 
-    showCart() {
-        return console.log('miniCart')
+    const toggleCart = () => {
+        return setshowMiniCart(!showMiniCart)
+    }
+    
+    const hideCart = () => {
+        return setshowMiniCart(false)
     }
 
-    render() {
-        return (
-            <React.Fragment>
-            <ul className="navItems">
-                <li><Link to='/'>Home</Link></li>
-                <li><Link to='/productList'>Products</Link></li>
-                <li>
-                    <button type='button' onClick={() => this.showCart()}>
-                        My Cart {this.renderCartItemNumer()}
-                    </button>
-                </li>
-            </ul>
-            <div className="myMiniCart">
-                <MiniCartPanel cartItems={this.props.cartItems} />
-            </div>
-            </React.Fragment>
-        )
-    }
+    return (
+        <React.Fragment>
+        <ul className="navItems">
+            <li><Link to='/' onClick={() => hideCart()}>Home</Link></li>
+            <li><Link to='/products' onClick={() => hideCart()}>Products</Link></li>
+            <li>
+                <button type='button' onClick={() => toggleCart()}>
+                    My Cart {renderCartItemNumer()}
+                </button>
+            </li>
+        </ul>
+        {showMiniCart ? <MiniCartPanel cartItems={cartItems} /> : null }
+        </React.Fragment>
+    )
 }
 
 const mapStateToProps = state => {

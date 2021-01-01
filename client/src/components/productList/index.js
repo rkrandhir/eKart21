@@ -1,34 +1,30 @@
-import React from 'react';
-import { connect} from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { fetchProducts } from '../../actions';
 import ProductWidget from './ProductWidget';
 
-class ProductList extends React.Component {
-    componentDidMount() {
-        this.props.fetchProducts();
-        console.log(this.props);
+const ProductList = ({ fetchProducts, products }) => {
+    useEffect(() => {
+        fetchProducts()
+    });
+
+    const renderProductList = () => {
+        return products.map(item => {
+            return <ProductWidget key={item.id} product={item} />
+        })
     }
 
-    renderProductList() {
-        return this.props.products.map(item => {
-            return <ProductWidget product={item} />
-        })
-    } 
-
-    render() {
-        return (
-            <div className="containerPadding">
-                <h1>Creative collections</h1>
-                <div className="productList">
-                {this.renderProductList()}
-                </div>
+    return (
+        <div className="containerPadding">
+            <h1>Creative collections</h1>
+            <div className="productList">
+                {renderProductList()}
             </div>
-        )
-    }    
+        </div>
+    )
 }
 
 const mapStatetoProps = state => {
-    console.log(state);
     return {
         products: state.products
     }

@@ -4,6 +4,7 @@ import Header from './headers';
 import './../styles/App.css';
 import Cart from './cart';
 import ProductList from './productList';
+import Product from './productList/Product';
 import Home from './home';
 
 const App = () => {
@@ -14,9 +15,10 @@ const App = () => {
           <Header />
           <div className='container'>
             <Switch>
-              <Route path='/cart'><Cart/></Route>          
-              <Route path='/productList'><ProductList /></Route>          
-              <Route exact path='/'><Home /></Route>
+              <Route path='/cart' component={Cart}></Route>          
+              <Route path='/products' component={ProductList}></Route>          
+              <Route exact path='/product/:id' component={Product}></Route>          
+              <Route exact path='/' component={Home}></Route>
             </Switch>
           </div>
             

@@ -24,14 +24,18 @@ button span{padding-right:10px;margin-top:2px}
 HEADER
 *******************/
 .header{
-    background:#000;color:#fff;display:flex;padding:10px 20px;align-items: center;box-shadow: 0 0px 20px 0 #525252;
+    background:#000;position:relative;color:#fff;display:flex;padding:10px 20px;align-items: center;box-shadow: 0 0px 20px 0 #525252;
 }
 .header .spacer{flex:1}
 .header ul.navItems{list-style:none;display:flex;align-items: center;}
 .header ul.navItems li{list-style:none;flex:1;margin-left:10px;}
 /* .header ul.navItems li:hover{color:#fa527d;border:1px solid #fa527d} */
 .header ul.navItems li a,.header ul.navItems li button{background:transparent;list-style:none;color:#e9a56e;border:1px solid transparent;cursor:pointer;padding:10px;white-space:nowrap;transition-duration: 0.5s;}
-.header ul.navItems li a:hover, .header ul.navItems li button:hover{list-style:none;color:#e9a56e;border:1px solid #e9a56e;transition-duration: 0.5s;}
+.header ul.navItems li a:hover, 
+.header ul.navItems li button:hover,  
+.header ul.navItems li button:active,
+.header ul.navItems li button:focus
+{outline:none;list-style:none;color:#e9a56e;border:1px solid #e9a56e;transition-duration: 0.5s;}
 .container{padding:0px;}
 .containerPadding{padding:20px 100px;}
 .container h1, .containerPadding h1{font-weight:300;font-size:32px;margin-bottom:10px}
@@ -45,9 +49,12 @@ HEADER
 .productList{display:flex;flex-flow:row wrap;justify-content: space-between;}
 .productList .productWidget{display:block;flex-basis: 24%;transition-duration: 0.2s;padding:10px 10px;margin-bottom: 50px;position:relative;}
 .productList .productWidget:hover{background:#f2f2f2;transition-duration: 0.2s}
-.productList .productWidget .prodImg{margin-bottom:20px;width:100%;border:1px solid #a9a9a9}
-.productList .productWidget .prodImg img{max-width: 100%;max-height: 100%;margin: auto;border:1px solid #efefef;}
-.productList .productWidget .productTitle{font-weight:bold;font-size:14px;display:block;color:#525252;padding-bottom: 5px}
+.productList .productWidget .prodImg{position:relative;margin-bottom:20px;width:100%;border:1px solid #a9a9a9}
+.productList .productWidget .cartItemMsg{animation-duration:10s;position:absolute;display:block;top:50%;left:50%;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);background-color:rgba(0, 0, 0, 0.2);color:#fff;cursor:pointer;border:1px solid #fff;padding:5px 15px;text-transform: uppercase;z-index: 9999;border-left:1px solid transparent;border:1px solid transparent}
+.productList .productWidget .cartItemMsg:hover{animation-duration:10s;border:1px solid #fff}
+.productList .productWidget .prodImg img{max-width: 100%;max-height: 100%;margin: auto;}
+.productList .productWidget a.productTitle{font-weight:bold;font-size:14px;display:block;color:#525252;padding-bottom: 15px}
+.productList .productWidget a.productTitle:hover{color:#ff7200}
 .productList .productWidget .productPrice{color:#212121;float:left}
 .productList .productWidget .addToCart{float:right;cursor: pointer;}
 .productList .productWidget .addToCart:hover{text-decoration: underline}
@@ -69,13 +76,20 @@ ul.productList li .selectSizePanel li{text-transform:uppercase}
 ul.productList li .selectSizePanel li:hover{color:#000}
 
 /*MiniCart*/
-.miniCartPanel{color:#666;position:fixed;top:60px;right:20px;width:360px;background:#fff;border:1px solid #e5e5e5;padding:10px;z-index:10000}
-.miniCartPanel .emptyMiniCart{text-align: center}
-.miniCartPanel .emptyMiniCart img{width:50px}
-.miniCartPanel .emptyMiniCart .emptyMsg{margin:30px 0 20px 0}
-.miniCartPanel .emptyMiniCart .emptyMsg p{margin:10px 0}
-.miniCartPanel .emptyMiniCart .emptyMsg p:last-child{font-size: 12px;margin-bottom: 0;}
+.iconDelete{color:#000;text-decoration: underline;background:url("http://www.rkrandhir.com/assets/images/icon-remove.png") 0 0 no-repeat;width:20px;height:20px;text-indent:-1000em;display:inline-block;cursor: pointer;}
+.iconDelete:hover{background:url("http://www.rkrandhir.com/assets/images/icon-remove.png") 0 0 no-repeat}
 
+.miniCartPanel{position: absolute;top:60px;right:10px;z-index:10000;display:flex;flex-direction: column;align-items: center;}
+.miniCartPanel .miniCartTip{border-bottom: 16px solid #fff;border-left: 8px solid transparent;
+    border-right: 8px solid transparent;position: absolute;right: 40px;top:-10px}
+.miniCartPanel .miniCartWrap{color:#666;width:360px;background:#fff;border:1px solid #e5e5e5;padding:10px;}
+.emptyMiniCart{text-align: center}
+.emptyMiniCart img{width:50px}
+.emptyMiniCart .emptyMsg{margin:30px 0 20px 0}
+.emptyMiniCart .emptyMsg p{margin:10px 0}
+.emptyMiniCart .emptyMsg p:last-child{font-size: 12px;margin-bottom: 0;}
+.emptyCartWrap {display:flex;justify-content: center;padding-top:50px;width:100%}
+.emptyCartWrap .emptyMiniCart img{width:150px}
 .miniCart .miniCartItemWrap{max-height:282px;overflow:auto}
 .miniCart .miniCartItemWrap .miniCartItem{border-bottom:1px solid #e5e5e5;padding:5px 0;display:flex;justify-content: space-between;}
 .miniCart .miniCartItemWrap .miniCartItem .miniCartImgWrap{flex-basis: 20%;}
@@ -84,31 +98,43 @@ ul.productList li .selectSizePanel li:hover{color:#000}
 .miniCart .miniCartItemWrap .miniCartItem .miniCartItemDetails .miniCartTitleCont{padding-bottom: 10px;display: flex}
 .miniCart .miniCartItemWrap .miniCartItem .miniCartItemDetails .miniCartTitleCont .miniCartTitle{color:#e9a56e;flex:1}
  
- .miniCart .btnViewCart{cursor:pointer;text-transform:uppercase;text-align: center;color:#fff;background:#000;width:100%;padding:10px}
-.miniCart .iconDelete{color:#000;text-decoration: underline;background:url("http://www.rkrandhir.com/assets/images/icon-remove.png") 0 0 no-repeat;width:20px;height:20px;text-indent:-1000em;display:block;cursor: pointer;}
-.miniCart .iconDelete:hover{background:url("http://www.rkrandhir.com/assets/images/icon-remove.png") 0 0 no-repeat}
+ .miniCart a.btnViewCart{cursor:pointer;text-transform:uppercase;text-align: center;color:#fff;background:#000;width:100%;padding:10px;transition-duration: 1s;display:block}
+ .miniCart a.btnViewCart:hover{cursor:pointer;text-transform:uppercase;text-align: center;color:#fff;background:#272727;width:100%;padding:10px;transition-duration: 1s;}
 .miniCart .totalPrice{text-transform: uppercase;padding:10px;text-align: right}
 .miniCart .totalPrice span{margin-left:10px;color:#ff7200;font-size: 22px}
 .miniCart .totalPrice span.inr{margin-left:20px;color:#525252;font-size: 12px}
 
-.miniCartClose {
-    position: absolute;
-    background: #fa527d;
-    color: #ececec;
-    z-index: 8888;
-    display: inline-block;
-    margin: 0 1em 1em 0;
-    height: 25px;
-    width: 50px;
-    border-bottom-left-radius: 100px;
-    border-bottom-right-radius: 100px;
-    text-align: center;
-    left: 50%;
-    bottom: -39px;
-    cursor: pointer;
-    -webkit-transform: translate(-50%,1px);
-    transform: translate(-50%,1px);
-    box-shadow: 0 5px 10px #e5e5e5;
-}
+.miniCartClose {background: #fa527d;color: #ececec;display: inline-block;height: 25px;
+    width: 50px;border-bottom-left-radius: 100px;border-bottom-right-radius: 100px;text-align: center;cursor: pointer;box-shadow: 0 5px 10px #e5e5e5}
 
+/*******************************************************************
+PRODUCT 
+*******************************************************************/
+.productWrap{display:flex}
+.productWrap .proLeftPanel{flex-basis: 70%;margin-right:20px}
+.productWrap .proLeftPanel .proImg{border:1px solid transparent;width:100%}
+.productWrap .proRightPanel{flex-basis: 30%}
 
+/*******************************************************************
+CART
+*******************************************************************/
+.cartPanel{display:flex}
+.cartPanel .cartItemList{flex-basis: 70%;margin-right:20px}
+.cartPanel .cartItemList table{width:100%;border-collapse: collapse;border-bottom: 1px solid #ddd;}
+.cartPanel .cartItemList table thead tr{background: #f9f9f9}
+.cartPanel .cartItemList table thead tr th{display:table-cell;font-weight: bold;}
+.cartPanel .cartItemList table thead tr th,
+.cartPanel .cartItemList table tbody tr td
+{padding: 8px;line-height: 1.5;vertical-align: top;border-top: 1px solid #ddd;text-align:center}
+.cartPanel .cartItemList .cartItem .cartImg{width:30px}
+.orderDetails{flex-basis: 30%;}
+
+/******** order summary **********/
+.order-summary-wrap{flex-basis:30%;}
+.order-summary-wrap .order-summary{padding:15px;background:#fff;border:1px dashed #757575}
+.order-summary-wrap .order-summary h3.order-summary-head{color:#000;margin:0;margin-bottom:10px;padding:0 0 15px 0;border-bottom:1px dashed #757575}
+.order-summary-wrap .order-summary .orderDataRow{display: block; display: flex;padding:5px 0}
+.order-summary-wrap .order-summary .orderDataLabel{flex:1}
+.order-summary-wrap .order-summary .orderDataValue{flex:1;text-align:right}
+.order-summary-wrap .order-summary .orderDataValue.amtPayable{color:#ff7200;font-weight:bold;font-size:1.2em}
+.checkoutBtn{cursor: pointer;text-transform: uppercase;text-align: center;color: #fff; background: #000;width: 100%;padding: 10px;margin-top:20px}
